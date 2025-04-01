@@ -102,7 +102,7 @@ python scripts/run_instancing.py"
 If you are using multiple GPUs, use the flag - CUDA_AVAILABLE_DEVICES, to set processes to run on different GPUS.
 
 ### GUI
-![image](media/gui.png)
+![image](images/gui.png)
 The GUI starts with each command you run. You can use the taskbars to move the camera around the scene or by using your mouse and panning on the image. You can also use it to take videos or images during or after generation. 
 
 ## Acknowledgement
