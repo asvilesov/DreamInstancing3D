@@ -1,0 +1,9 @@
+/output
+/point_e_model_cache
+*.zip
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pth
+*.ipynb

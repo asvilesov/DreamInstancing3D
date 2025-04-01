@@ -1,0 +1,163 @@
+
+### Output
+outdir: logs
+save_path: output
+
+# load pc (None, .ply, point-e)
+load_path: 
+prompt: sailboats_jetskis_ocean
+pointe_prompt: None
+negative_prompt: None
+
+#--------------------- Instancing Settings ---------------------#
+grid_size: [20, 20]
+grid_resolution: [10, 10]
+# grid_size: [14, 14] 
+# grid_resolution: [7,7]
+sh_degree: 0
+
+train_obj: True
+
+
+#--------------------- Train Settings ---------------------#
+# training batch size per iter
+batch_size: 4
+# total iterations
+start_iter: 1 #501 # wait for objects to be optimized a bit
+max_iter: 8000 # changed this from 500, diffusion models relies on this
+course_steps: 8000
+# Losses - set to zero to disable
+# tensorboard logging interval
+log_interval: 101
+# device
+device: cuda:0
+# save interval
+save_interval: 490 #900
+# start training
+training: True
+# debug
+debug: False
+# dynamic camera
+dynamic_camera: False
+# floor
+floor: False # this should change the way the camera samples.
+
+# Losses and Models
+pretrained_model_name_or_path: "stabilityai/stable-diffusion-2-1-base"
+use_view_dependent_prompt: True
+front_threshold: 45.0
+back_threshold: 45.0
+overhead_threshold: 60.0
+use_prompt_debiasing: False
+use_cache: True
+view_dependent_prompt_front: True
+use_perp_negative: False
+
+vsd:
+  enable: False
+  lora: True
+  q_cond: True
+  warmup_steps: 500
+  K: 1
+  K2: 1
+  unet_lr: 0.0001
+  scheduler: True
+  v_pred: True
+
+course_sd_loss: 10
+course_guidance: 100 #7.5
+rescale:
+  enable: False 
+  scale: 0.7
+scheduler: 
+  dreamlike: False
+  random: False
+  linear_uniform: True
+  max_step_rescale: 6000
+  max_scale_linear: 0.50
+
+#--------------------- Losses ---------------------#
+# alpha hull sampling loss
+alpha_loss: 0
+alpha_interval: 100
+# depth loss
+depth_loss: 0
+# farthest point sampling loss
+fps_loss: 0
+fps_k: 4000
+fps_interval: 25
+# knn loss
+knn_loss: 0.1
+knn_k: 3
+knn_multiplier: 0
+#opacity regularizer
+opacity_loss: 0
+
+#--------------------- Gaussian splatting ---------------------#
+gs3d:
+  init_radius: 0.50
+  num_pts: 5000
+  sh_degree: 0
+  position_lr_init: 0.004
+  position_lr_final: 0.0002 
+  position_lr_delay_mult: 0.02
+  position_lr_max_steps: ${max_iter}
+  feature_lr: 0.02
+  # opacity_lr: 0.05
+  # scaling_lr: 0.003
+  # rotation_lr: 0.006
+  opacity_lr: 0.0
+  scaling_lr: 0.0
+  rotation_lr: 0.0
+  percent_dense: 0.01
+  density_start_iter: 1
+  density_end_iter: 2000
+  densification_interval: 250
+  opacity_reset_interval: 10000
+  densify_grad_threshold: 0.50 
+  device: ${device}
+
+#--------------------- Point-E ---------------------#
+point_e:
+  enable: True
+  knn_loss: 0 # Use 20 if planes or convexity in object need to be preserved, otherwise zero. 
+  # guidance
+  num_steps: 0
+  sd_loss: 0 # 0 will disable sd loss
+  device: ${device}
+  base_name: base40M-textvec
+  weighting_strategy: sds
+  guidance_scale: 100
+  scheduler_type: original
+  batch_size: 4
+  min_step_percent: 0.02
+  max_step_percent: 0.98
+  mean_only: true
+  normalize: false
+  grad_clip: null
+  
+#--------------------- Rendering Settings ---------------------#
+render:
+  # rendering resolution
+  ref_size: 512
+  # training camera radius
+  radius: 3
+  # training camera fovy
+  fovy: 49.1
+  # FOV Jitter
+  fov_jitter:
+    enable: True
+    step_start: 1
+  # default camera elevation
+  elevation: 0
+  min_ver: 5
+  max_ver: 35
+
+#--------------------- GUI Settings ---------------------------#
+gui: 
+  enable: True
+  # GUI resolution
+  HEIGHT: 512
+  WIDTH: 512
+  # GUI background color
+  BG_COLOR: [1.0, 1.0, 1.0]

@@ -1,0 +1,73 @@
+
+### Output
+outdir: logs
+save_path: output
+
+# load pc (None, .ply, point-e)
+load_path: output/plate.ply
+prompt: None
+negative_prompt: None
+
+#--------------------- Train Settings ---------------------#
+# training batch size per iter
+batch_size: 1
+# total iterations
+max_iter: 6000 # changed this from 500, diffusion models relies on this
+course_steps: 6000
+# tensorboard logging interval
+log_interval: 100
+# device
+device: cuda:0
+# save interval
+save_interval: 400
+# start training
+training: False
+# debug
+debug: False
+# dynamic camera
+dynamic_camera: False
+
+#--------------------- Gaussian splatting ---------------------#
+gs3d:
+  init_radius: 0.50
+  num_pts: 1000
+  sh_degree: 0
+  position_lr_init: 0.003
+  position_lr_final: 0.00016 
+  position_lr_delay_mult: 0.02
+  position_lr_max_steps: ${max_iter}
+  feature_lr: 0.0025
+  opacity_lr: 0.05
+  scaling_lr: 0.005
+  rotation_lr: 0.001
+  percent_dense: 0.01
+  density_start_iter: 1
+  density_end_iter: 4000
+  densification_interval: 500
+  opacity_reset_interval: 10000
+  densify_grad_threshold: 0.00002
+  device: ${device}
+
+#--------------------- Rendering Settings ---------------------#
+render:
+  # rendering resolution
+  ref_size: 512
+  # training camera radius
+  radius: 3
+  # training camera fovy
+  fovy: 49.1
+  # FOV Jitter
+  fov_jitter:
+    enable: True
+    step_start: 1
+  # default camera elevation
+  elevation: 0
+
+#--------------------- GUI Settings ---------------------------#
+gui: 
+  enable: True
+  # GUI resolution
+  HEIGHT: 512
+  WIDTH: 512
+  # GUI background color
+  BG_COLOR: [1.0, 1.0, 1.0]

@@ -1,0 +1,102 @@
+
+### Output
+outdir: logs
+save_path: output
+
+
+#--------------------- Train Settings ---------------------#
+prompt: a photo of a pine tree 
+negative_prompt: None
+#--------------------- Train Settings ---------------------#
+# training batch size per iter
+batch_size: 8
+# total iterations
+max_iter: 200 
+course_steps: 200
+# Losses - set to zero to disable
+# tensorboard logging interval
+log_interval: 100
+# device
+device: cuda:0
+# save interval
+save_interval: 3
+# start training
+training: True
+# debug
+debug: False
+
+
+# Losses and Models
+pretrained_model_name_or_path: "stabilityai/stable-diffusion-2-1-base"
+use_view_dependent_prompt: False #True
+front_threshold: 45.0
+back_threshold: 45.0
+overhead_threshold: 60.0
+use_prompt_debiasing: False
+use_cache: True
+view_dependent_prompt_front: False
+use_perp_negative: False #
+course_sd_loss: 1
+course_guidance: 100
+stage1_steps: 0
+
+rescale:
+  enable: False 
+  scale: 0.7
+scheduler: 
+  dreamlike: False
+  random: True
+  linear_uniform: False
+  max_step_rescale: 1
+  max_scale_linear: 0.25
+#--------------------- Losses ---------------------#
+
+
+#--------------------- Compositional Model ---------------------#
+composite:
+  train_objects: False   
+  obj_stop_thresh: 0
+  comp_start_thresh: 0
+  comp_stop_thresh: 300
+
+  num_objs: 2
+ 
+  obj_paths: ['./output/plate.ply','./output/hamburger.ply']
+  
+  prompts: ['A photo of a plate','A photo of a hamburger']
+  pointe_prompts: ['plate','hamburger']
+  pointe_knn: [20, 20]
+
+
+  negative_prompts: [None,None]
+  object_config_path: './configs/object/text3d_object.yaml'
+  device: ${device}
+  # spherical harmonics
+  sh_degree: 0
+
+
+#--------------------- Rendering Settings ---------------------#
+render:
+  # rendering resolution
+  ref_size: 512
+  # training camera radius - for after the initialization
+  radius: 4.5
+  # training camera fovy
+  fovy: 49.1
+  # default camera elevation
+  elevation: 0
+  # checkpoint to load for stage 1 (should be a ply file)
+  load:
+  # whether allow geom training in stage 2
+  train_geo: False
+  # prob to invert background color during training (0 = always black, 1 = always white)
+  invert_bg_prob: 0.5
+
+#--------------------- GUI Settings ---------------------------#
+gui: 
+  enable: True
+  # GUI resolution
+  HEIGHT: 800
+  WIDTH: 800
+  # GUI background color
+  BG_COLOR: [1.0, 1.0, 1.0]
